@@ -14,10 +14,10 @@ options = {"py2exe":
 }   
 
 setup(
-    windows = ["WordPlateConfig.py"],
+    windows = [{"script": "WordPlateConfig.py", "icon_resources": [(1, "images/wordplate.ico")]}],
 	options = options,
 	data_files = [
-		('images',[])
+		('images',['images/wordplate.ico'])
 		],
     zipfile = None,
 ) 
