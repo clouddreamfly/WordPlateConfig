@@ -17,8 +17,11 @@ setup(
     windows = [{"script": "WordPlateConfig.py", "icon_resources": [(1, "images/wordplate.ico")]}],
 	options = options,
 	data_files = [
-		('images',['images/wordplate.ico'])
-		],
+		('images', ['images/wordplate.ico']), 
+		('images/wp_bg', glob.glob('images/wp_bg/*.png')),
+                ('images/heap_normal', glob.glob('images/heap_normal/*.png')),
+                ('images/hand_small', glob.glob('images/hand_small/*.png')),
+                ('images/hand_big', glob.glob('images/hand_big/*.png'))],
     zipfile = None,
 ) 
 
