@@ -950,11 +950,11 @@ class HandWordPlate:
         
 #----------------------------------------------------------------------
 
-class DragCanvas(wx.ScrolledWindow):
+class DragCanvas(wx.Panel):
     
     def __init__(self, parent, ID = -1):
         
-        wx.ScrolledWindow.__init__(self, parent, ID)
+        wx.Panel.__init__(self, parent, ID)
         
         self.parent = parent
         self.shapes = []
@@ -969,8 +969,7 @@ class DragCanvas(wx.ScrolledWindow):
         self.bg_image = wx.Image('images/wp_bg/room_bg.png')
         self.AdjustBackground()
 
-        # Make a shape from an image and mask.  This one will demo
-        # dragging outside the window
+        # init word plate view
         self.InitWordPlateView()
         self.UpdateWordPlateView()
         
@@ -1196,6 +1195,8 @@ class DragCanvas(wx.ScrolledWindow):
         
         self.AdjustBackground()         
         self.UpdateWordPlateView()
+        
+        evt.Skip()
 
     # We're not doing anything here, but you might have reason to.
     # for example, if you were dragging something, you might elect to
@@ -1237,7 +1238,6 @@ class DragCanvas(wx.ScrolledWindow):
     def OnPaint(self, evt):
         
         dc = wx.PaintDC(self)
-        self.PrepareDC(dc)
         self.DrawShapes(dc)
 
     # Left mouse button is down.
@@ -1796,21 +1796,18 @@ class WordPlateMainFrame(wx.Frame):
         self.save_config_path = None
         
         self.canvas = DragCanvas(self)
-        self.canvas.SetSize(self.GetClientSize())
+        frame_sizer = wx.BoxSizer(orient=wx.VERTICAL)
+        self.canvas.SetSizer(frame_sizer)
         
         self.btn_setting = wx.Button(self.canvas, label=u"设置", size = (40, -1))
         self.btn_config_path = wx.Button(self.canvas, label=u"设置保存路径", size = (90, -1))
         self.btn_save = wx.Button(self.canvas, label=u"保存", size = (40, -1))
         settings_sizer = wx.BoxSizer(orient=wx.HORIZONTAL)
-        self.canvas.SetSizer(settings_sizer)
         settings_sizer.Add(self.btn_setting, 0, wx.LEFT, 2)
         settings_sizer.AddStretchSpacer(1)
-        settings_sizer.Add(self.btn_config_path, 0, wx.RIGHT, 4)
+        settings_sizer.Add(self.btn_config_path, 0, wx.RIGHT, 2)
         settings_sizer.Add(self.btn_save, 0, wx.RIGHT, 2)
-        
-        frame_sizer = wx.BoxSizer(orient=wx.VERTICAL)
-        self.SetSizer(frame_sizer)
-        frame_sizer.Add(self.canvas, 1, wx.ALL|wx.EXPAND, 0)
+        frame_sizer.Add(settings_sizer, 1, wx.ALL|wx.EXPAND, 0)
         
         self.Bind(wx.EVT_CLOSE,  self.OnClose)
         self.Bind(wx.EVT_BUTTON, self.OnBtnSetting, self.btn_setting)
